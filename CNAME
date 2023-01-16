@@ -1,7 +1,1 @@
-$dig neba.cf +nostats +nocomments +nocmd
-;neba.cf.   IN  A
-neba.cf.    26728 IN CNAME  MYUSERNAME.github.io.
-NebaNebo.github.io.   1527    IN  A   185.199.108.153
-NebaNebo.github.io.   1527    IN  A   185.199.111.153
-NebaNebo.github.io.   1527    IN  A   185.199.110.153
-NebaNebo.github.io.   1527    IN  A   185.199.109.153
+neba.cf
