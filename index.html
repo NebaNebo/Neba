@@ -87,14 +87,30 @@ p {
     <div class="content">
       <div class="item">
         <!-- Place your content here to have it be centered vertically and horizontally  -->
-        <h1>COMING SOON</h1>
+        <h1 id="app"> </h1>
         <p>neba.cf</p>
       </div>
     </div>
   </div>
 </div>
+  <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
   <script>
+var app = document.getElementById('app');
 
+var typewriter = new Typewriter(app, {
+  loop: true,
+  delay: 75,
+});
+
+typewriter
+  .pauseFor(2500)
+  .typeString('A simple yet powerful native javascript')
+  .pauseFor(300)
+  .deleteChars(10)
+  .typeString('<strong>JS</strong> plugin for a cool typewriter effect and ')
+  .typeString('<strong>only <span style="color: #27ae60;">5kb</span> Gzipped!</strong>')
+  .pauseFor(1000)
+  .start();
   </script>
  
   </body>
