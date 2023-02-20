@@ -1,117 +1,67 @@
+<!DOCTYPE html>
 <html>
   <head>
-    <title>neba.cf</title>
-    <meta name="description" content="neba.cf">
-    <meta name="keywords" content="neba.cf">
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Live Stream Video Example</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-@import url(https://fonts.googleapis.com/css?family=Montserrat);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
-
-h1 {
-  margin: 0;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 4em;
-  color: #333;
-  -webkit-text-shadow: 0 2px 1px rgba(0, 0, 0, 0.6), 0 0 2px rgba(0, 0, 0, 0.7);
-  -moz-text-shadow: 0 2px 1px rgba(0, 0, 0, 0.6), 0 0 2px rgba(0, 0, 0, 0.7);
-  text-shadow: 0 2px 1px rgba(0, 0, 0, 0.6), 0 0 2px rgba(0, 0, 0, 0.7);
-  word-spacing: 16px;
-}
-
-p {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 1.4em;
-  font-weight: bold;
-  color: #222;
-  text-shadow: 0 0 40px #FFFFFF, 0 0 30px #FFFFFF, 0 0 20px #FFFFFF;
-}
-
-.container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  background: url('');
-  background-size: cover;
-}
-
-.wrapper {
-  width: 100%;
-  min-height: 100%;
-  height: auto;
-  display: table;
-}
-
-.content {
-  display: table-cell;
-  vertical-align: middle;
-}
-
-.item {
-  width: auto;
-  height: auto;
-  margin: 0 auto;
-  text-align: center;
-  padding: 8px;
-}
-
-@media only screen and (min-width: 800px) {
-  h1 {
-    font-size: 6em;
-  }
-  p {
-    font-size: 1.6em;
-  }
-}
-
-@media only screen and (max-width: 320px) {
-  h1 {
-    font-size: 2em;
-  }
-  p {
-    font-size: 1.2em;
-  }
-}
+      /* Hide the time counter and progress bar */
+      video::-webkit-media-controls-time-remaining-display,
+      video::-webkit-media-controls-elapsed-time-display,
+      video::-webkit-media-controls-current-time-display,
+      video::-webkit-media-controls-timeline {
+        display: none;
+      }
     </style>
   </head>
-<body>
-  <frameset rows="*">
-    <frame frameborder=0 src="https://script.google.com/macros/s/AKfycbx43qa0tpIVB8J9lBbi-WukMJX6qYIqKeEZ8tcAif7kJlzfENyKlck0wc8LTSyobnCw/exec" name="dot_tk_frame_content" scrolling="auto" noresize>
-    <frame frameborder=0 src="" name="dot_tk_frame_content" scrolling="auto" noresize>
-
-  <!-- Intro to pen: Animation is made in svgstor. It's a fairy easy-to-use app, and it can generate svg and js. On a free pricing plan they allow 3 exports per month -->
-
- <div class="container">
-  <div class="wrapper">
-    <div class="content">
-      <div class="item">
-        <!-- Place your content here to have it be centered vertically and horizontally  -->
-        <h1 id="app">neba nebo </h1>
-        <p>neba.cf</p>
-      </div>
+  <body>
+    <div>
+      <select id="stream-select">
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_pleague/tracks-v1a1/mono.m3u8">Premier League</option>
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_laliga/tracks-v1a1/mono.m3u8">La Liga</option>
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_football/tracks-v1a1/mono.m3u8">football</option>
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_variety_1/tracks-v1a1/mono.m3u8">variety1</option>
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_variety_2/tracks-v1a1/mono.m3u8">variety2</option>
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_variety_3/tracks-v1a1/mono.m3u8">variety3</option>
+        <option value="http://pakin2.worldtvip.co:9090/za_ss_variety_4/tracks-v1a1/mono.m3u8">variety4</option>
+      </select><br><br> 
+      <video id="live-stream" height="720px" width="1280px" controls autoplay></video>
     </div>
-  </div>
-</div>
-  <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
-  <script>
-var app = document.getElementById('app');
-
-var typewriter = new Typewriter(app, {
-  loop: true,
-  delay: 75,
-});
-
-typewriter
-  .pauseFor(2500)
-  .typeString('A simple yet powerful native javascript')
-  .pauseFor(300)
-  .deleteChars(10)
-  .typeString('<strong>JS</strong> plugin for a cool typewriter effect and ')
-  .typeString('<strong>only <span style="color: #27ae60;">5kb</span> Gzipped!</strong>')
-  .pauseFor(1000)
-  .start();
-  </script>
- 
+    <script>
+      const video = document.getElementById('live-stream');
+      let streamUrl = document.getElementById('stream-select').value; // Get initial stream URL from selected option
+      
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(streamUrl);
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play();
+        });
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = streamUrl;
+        video.addEventListener('loadedmetadata', () => {
+          video.play();
+        });
+      }
+      
+      const streamSelect = document.getElementById('stream-select');
+      streamSelect.addEventListener('change', () => {
+        streamUrl = streamSelect.value;
+        
+        if (Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(streamUrl);
+          hls.attachMedia(video);
+          hls.on(Hls.Events.MANIFEST_PARSED, () => {
+            video.play();
+          });
+        } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+          video.src = streamUrl;
+          video.addEventListener('loadedmetadata', () => {
+            video.play();
+          });
+        }
+      });
+    </script>
   </body>
 </html>
