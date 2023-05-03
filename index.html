@@ -80,16 +80,20 @@ p {
   <div class="wrapper">
     <div class="content">
       <div class="item">
-        <!-- Place your content here to have it be centered vertically and horizontally  -->
-        <h1>COMING SOON</h1>
-        <p>This website is under construction.</p>
+      
       </div>
     </div>
   </div>
 </div>
-    <script>
-      
-    </script>
+<script src="<https://unpkg.com/typeit@8.7.1/dist/index.umd.js>"></script>
+
+<script>
+new TypeIt(".item", {
+  strings: ["COMING SOON", "NEBA THE MECHANICAL "],
+  speed: 50,
+  waitUntilVisible: true,
+}).go();
+</script>
  
 </body>
 </html>
